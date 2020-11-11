@@ -139,55 +139,40 @@ class DCGAN():
         # # Adversarial ground truths
         # valid = np.ones((batch_size, 1))
         # fake = np.zeros((batch_size, 1))
-        d_race_counter = 0
-        g_race_counter = 0
-        d_race = 1
-        g_race = 1
         dataset = dataset
         for epoch in range(epochs):
             for batch in dataset:
-                for _ in range(d_race):
-                    # ---------------------
-                    #  Train Discriminator
-                    # ---------------------
+                # ---------------------
+                #  Train Discriminator
+                # ---------------------
 
-                    noise = np.random.normal(0, 1, (batch_size, self.latent_dim))
-                    gen_imgs = self.generator.predict(noise)
+                noise = np.random.normal(0, 1, (batch_size, self.latent_dim))
+                gen_imgs = self.generator.predict(noise)
 
-                    # Train the discriminator (real classified as ones and generated as zeros)
-                    d_loss_real = self.discriminator.train_on_batch(batch, np.ones((batch_size, 1)))
-                    d_loss_fake = self.discriminator.train_on_batch(gen_imgs, np.zeros((batch_size, 1)))
-                    d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
-                    # if(int(d_loss_fake[1] * 100) > 90):
-                    #     d_race_counter = d_race_counter + 1
+                # Train the discriminator (real classified as ones and generated as zeros)
+                d_loss_real = self.discriminator.train_on_batch(batch, np.ones((batch_size, 1)))
+                d_loss_fake = self.discriminator.train_on_batch(gen_imgs, np.zeros((batch_size, 1)))
+                d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
+                # if(int(d_loss_fake[1] * 100) > 90):
+                #     d_race_counter = d_race_counter + 1
 
                 # ---------------------
                 #  Train Generator
                 # ---------------------
-                if d_race_counter > 100:
-                    d_race_counter = 0
-                    d_race = 1
-                    g_race = 2
 
-                for idx in range(g_race):
-                    # Train the generator (wants discriminator to mistake images as real)
-                    g_loss = self.combined.train_on_batch(noise, np.ones((batch_size, 1)))
-                    # if(int(g_loss[1] * 100) > 95):
-                    # if idx > 0:
-                    #     noise = np.random.normal(0, 1, (batch_size, self.latent_dim))
-                    # if(g_loss[1] * 100 > 70):
-                    #     g_race_counter = g_race_counter + 1
-
-                if g_race_counter > 50:
-                    g_race_counter = 0
-                    d_race = 2
-                    g_race = 1
+                # Train the generator (wants discriminator to mistake images as real)
+                g_loss = self.combined.train_on_batch(noise, np.ones((batch_size, 1)))
+                # if(int(g_loss[1] * 100) > 95):
+                # if idx > 0:
+                #     noise = np.random.normal(0, 1, (batch_size, self.latent_dim))
+                # if(g_loss[1] * 100 > 70):
+                #     g_race_counter = g_race_counter + 1
 
                 # Plot the progress
                 print(
-                    "%d [D loss: %f, acc real: %-.2f%%, acc fake.: %.2f%% acc comb: %.2f%%] [G loss: %f G acc: %.2f%%] [G: %d Dn: %d]" %
+                    "%d [D loss: %f, acc real: %-.2f%%, acc fake.: %.2f%% acc comb: %.2f%%] [G loss: %f G acc: %.2f%%]" %
                     (self.global_total, d_loss[0], (100 * d_loss_real[1]), 100 * d_loss_fake[1], (100 * d_loss[1]),
-                     g_loss[0], g_loss[1] * 100, g_race, d_race))
+                     g_loss[0], g_loss[1] * 100))
                 self.global_total = self.global_total + 1
                 # If at save interval => save generated image samples
                 if epoch % save_interval == 0:
