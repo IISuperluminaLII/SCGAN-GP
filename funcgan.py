@@ -134,54 +134,6 @@ class DCGAN():
         model = tf.keras.Model(inputs=inputs, outputs=out)
         return model
 
-        # first1x1 = Conv2D(16, kernel_size=4, padding="same", input_shape=self.img_shape)(inputs[0])
-        # first1x1 = LeakyReLU()(first1x1)
-        # first1x1 = BatchNormalization(momentum=0.8)(first1x1)
-        # first1x1 = SpatialDropout2D(0.25)(first1x1)
-        #
-        # second2x2 = Conv2D(32, kernel_size=4, padding='same', strides=2)(inputs[1])
-        # second2x2 = BatchNormalization(momentum=0.8)(second2x2)
-        # second2x2 = LeakyReLU()(second2x2)
-        # second2x2 = SpatialDropout2D(0.25)(second2x2)
-        # second2x2 = concatenate([first1x1, second2x2])
-        #
-        # third4x4 = Conv2D(64, kernel_size=4, padding='same', strides=2)(inputs[2])
-        # third4x4 = BatchNormalization(momentum=0.8)(third4x4)
-        # third4x4 = LeakyReLU()(third4x4)
-        # third4x4 = SpatialDropout2D(0.25)(third4x4)
-        # third4x4 = concatenate([second2x2, third4x4])
-        #
-        # fourth8x8 = Conv2D(64, kernel_size=4, padding='same', strides=2)(inputs[3])
-        # fourth8x8 = BatchNormalization(momentum=0.8)(fourth8x8)
-        # fourth8x8 = LeakyReLU()(fourth8x8)
-        # fourth8x8 = SpatialDropout2D(0.25)(fourth8x8)
-        # fourth8x8 = concatenate([third4x4, fourth8x8])
-        #
-        # fifth16x16 = Conv2D(128, kernel_size=4, padding='same', strides=2)(inputs[4])
-        # fifth16x16 = BatchNormalization(momentum=0.8)(fifth16x16)
-        # fifth16x16 = LeakyReLU()(fifth16x16)
-        # fifth16x16 = SpatialDropout2D(0.25)(fifth16x16)
-        # fifth16x16 = concatenate([fourth8x8, fifth16x16])
-        #
-        # # sixth32x32 = Conv2D(256, kernel_size=4, padding='same', strides=2)(inputs[5])
-        # # sixth32x32 = BatchNormalization(momentum=0.8)(sixth32x32)
-        # # sixth32x32 = LeakyReLU()(sixth32x32)
-        # # sixth32x32 = SpatialDropout2D(0.25)(sixth32x32)
-        # # sixth32x32 = Concatenate([fifth16x16, sixth32x32])
-        # #
-        # # seventh64x64 = Conv2D(512, kernel_size=2, padding='same', strides=2)(inputs[6])
-        # # seventh64x64 = BatchNormalization(momentum=0.8)(seventh64x64)
-        # # seventh64x64 = LeakyReLU()(seventh64x64)
-        # # seventh64x64 = SpatialDropout2D(0.25)(seventh64x64)
-        # # seventh64x64 = Concatenate([sixth32x32, seventh64x64])
-        #
-        # seventh64x64 = Flatten()(fifth16x16)
-        #
-        # out = Dense(1, activation='sigmoid')(seventh64x64)
-
-        # img = Input(shape=self.img_shape)
-        # return Model(inputs, out)
-
     def train(self, epochs, batch_size=128, save_interval=50, X_train=None, global_total=0, dataset=None):
         input("Errthing good?")
         # # Adversarial ground truths
